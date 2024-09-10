@@ -1,0 +1,10 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/joeyalessi/Dev/CSE306/PRE1/csv'
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _open_file, symObjAddr: 0x0, symBinAddr: 0x1000035D4, symSize: 0x74 }
+  - { offsetInCU: 0x42, offset: 0x42, size: 0x8, addend: 0x0, symName: _open_file, symObjAddr: 0x0, symBinAddr: 0x1000035D4, symSize: 0x74 }
+  - { offsetInCU: 0x94, offset: 0x94, size: 0x8, addend: 0x0, symName: _process_h_tag, symObjAddr: 0x74, symBinAddr: 0x100003648, symSize: 0x5EC }
+  - { offsetInCU: 0x303, offset: 0x303, size: 0x8, addend: 0x0, symName: _process_first_arg, symObjAddr: 0x660, symBinAddr: 0x100003C34, symSize: 0x1E8 }
+  - { offsetInCU: 0x3C4, offset: 0x3C4, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x848, symBinAddr: 0x100003E1C, symSize: 0x50 }
+...
