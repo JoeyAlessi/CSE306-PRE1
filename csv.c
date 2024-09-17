@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
+#include <ctype.h>
 
 #define MAXLENGTH 1024
 
@@ -273,6 +274,83 @@ void process_multi_h_tag(int argc, char *argv[], FILE *file)
     }
 }
 
+void calculateMinimumValue(char *field, FILE *file)
+{
+    char row[MAXLENGTH];
+    int min_value = INT_MAX;
+    bool has_numeric_data = false; // flag to determine if it contains numeric data
+    int header_index = -1;
+
+    // Check if the field is a numeric index
+    if (isdigit(field[0]))
+    {
+        header_index = atoi(field); // Convert to integer index
+    }
+    else
+    {
+        // Read the header to find the index of the specified field
+        if (fgets(row, MAXLENGTH, file) != NULL)
+        {
+            char *field_name = strtok(row, ",");
+            int index = 0;
+
+            while (field_name != NULL)
+            {
+                field_name[strcspn(field_name, "\r\n")] = 0; // trim newlines
+                if (strcmp(field_name, field) == 0)
+                {
+                    header_index = index; // store the index of the field
+                    break;
+                }
+                index++;
+                field_name = strtok(NULL, ",");
+            }
+        }
+    }
+
+    // Check if the field was found
+    if (header_index == -1)
+    {
+        fprintf(stderr, "Field '%s' not found in header.\n", field);
+        exit(EXIT_FAILURE);
+    }
+
+    // Read through the CSV file to find the minimum value
+    while (fgets(row, MAXLENGTH, file) != NULL)
+    {
+        char *cleaned_line = parse_csv_line(row); // clean line first
+        char *value = strtok(cleaned_line, ",");
+
+        // Increment to the correct location on line
+        for (int i = 0; i < header_index; i++)
+        {
+            value = strtok(NULL, ",");
+        }
+
+        // Convert value to number
+        double new_val = atoi(value);
+        if (new_val != 0.0 || value[0] == '0')
+        { // check if conversion was successful
+            has_numeric_data = true;
+            if (new_val < min_value)
+            {
+                min_value = new_val;
+            }
+        }
+
+        free(cleaned_line); // free memory when done
+    }
+
+    // If no numeric data was found, exit program
+    if (!has_numeric_data)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    // Print minimum value
+    printf("%d\n", min_value);
+}
+
 void process_first_arg(int argc, char *argv[], FILE *file)
 {
 
@@ -333,7 +411,16 @@ void process_first_arg(int argc, char *argv[], FILE *file)
     else
     {
 
-        // CAN BE -recrods, -min , -mean, or -max (LATER)
+        for (int i = 1; i < argc; i++)
+        {
+            if (strcmp(argv[i], "-min") == 0)
+            {
+                calculateMinimumValue(argv[i + 1], file);
+                i += 1; // Skip the field associated with min as its being entered into the fucntion.
+            }
+        }
+
+        // CAN BE -recrods, -mean, or -max (LATER)
         printf("Invalid first argument.\n");
     }
 }
