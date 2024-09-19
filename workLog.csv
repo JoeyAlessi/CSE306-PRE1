@@ -1,4 +1,3 @@
 DATE,UBIT,DURATION,ACTIVITY & TOOL DESCTIPTION
 2024/09/17,edwiniri,10 minutes,Created this csv file to log our work in libreOffice which is a spread sheet program on linux
-2024/09/17,djgage,2 Hours,Tested existing code using the sample dataset and provided command line arguments. Found a bug in mean when a -h is called the values were getting typecasted to int not double. I also implemented the -min functionality when there is no -h as an argument. 
 2024/09/19,edwiniri,30 minutes,"Created csv.h to help keep global variables, and function defintions organized. It will also be useful for when I create the auto tester. I used my neovim setup to help write the code for csv.h. neovim is a text editor like emacs, but better >:)"
