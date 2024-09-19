@@ -1,0 +1,12 @@
+DATE,UBIT,DURATION,ACTIVITY & TOOL DESCTIPTION
+
+
+09/10/2024, jjalessi, 15 minutes, created a GitHub repo “CSE306-PRE1” to start working collaboratively with my team members on PRE1
+
+09/10/2024, jjalessi, 15 minutes, used vscode editor to write a main file and push to GitHub
+
+09/12/2024, jjalessi, 30 minutes, used vscode editor to write a function to read from the csv file; also added #include <stdlib.h> for exit(); pushed all of this to github
+
+09/12/2024, jjalessi, 1.5 hours, Implemented a function in vscode to clean each row as I loop through; ensured comma splitting actually works
+
+09/13/2024, jjalessi, 2 hours, worked on function ‘process_first_arg’ in vscode to handle first argument on command line; pushed my work to GitHub repo
