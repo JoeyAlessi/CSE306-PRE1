@@ -350,9 +350,147 @@ void calculateMinimumValue(char *field, FILE *file)
     printf("%d\n", min_value);
 }
 
+void calculateMaximumValue(char *field, FILE *file)
+{
+    char row[MAXLENGTH];
+    int max_value = INT_MIN;
+    bool has_numeric_data = false;
+    int header_index = -1;
+
+    if (isdigit(field[0]))
+    {
+        header_index = atoi(field); 
+    }
+    else
+    {
+        if (fgets(row, MAXLENGTH, file) != NULL)
+        {
+            char *field_name = strtok(row, ",");
+            int index = 0;
+
+            while (field_name != NULL)
+            {
+                field_name[strcspn(field_name, "\r\n")] = 0; 
+                if (strcmp(field_name, field) == 0)
+                {
+                    header_index = index; 
+                    break;
+                }
+                index++;
+                field_name = strtok(NULL, ",");
+            }
+        }
+    }
+
+    if (header_index == -1)
+    {
+        fprintf(stderr, "Field '%s' not found in header.\n", field);
+        exit(EXIT_FAILURE);
+    }
+
+    while (fgets(row, MAXLENGTH, file) != NULL)
+    {
+        char *cleaned_line = parse_csv_line(row);
+        char *value = strtok(cleaned_line, ",");
+
+        for (int i = 0; i < header_index; i++)
+        {
+            value = strtok(NULL, ",");
+        }
+
+        double new_val = atoi(value);
+        if (new_val != 0.0 || value[0] == '0')
+        { 
+            has_numeric_data = true;
+            if (new_val > max_value)  
+            {
+                max_value = new_val;
+            }
+        }
+
+        free(cleaned_line); 
+    }
+
+    if (!has_numeric_data)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    printf("%d\n", max_value);
+}
+
+
+void calculateMeanValue(char *field, FILE *file)
+{
+    char row[MAXLENGTH];
+    double sum = 0.0;
+    int count = 0;
+    bool has_numeric_data = false;
+    int header_index = -1;
+
+    if (isdigit(field[0]))
+    {
+        header_index = atoi(field); 
+    }
+    else
+    {
+        if (fgets(row, MAXLENGTH, file) != NULL)
+        {
+            char *field_name = strtok(row, ",");
+            int index = 0;
+
+            while (field_name != NULL)
+            {
+                field_name[strcspn(field_name, "\r\n")] = 0; 
+                if (strcmp(field_name, field) == 0)
+                {
+                    header_index = index;
+                    break;
+                }
+                index++;
+                field_name = strtok(NULL, ",");
+            }
+        }
+    }
+
+    if (header_index == -1)
+    {
+        fprintf(stderr, "Field '%s' not found in header.\n", field);
+        exit(EXIT_FAILURE);
+    }
+
+    while (fgets(row, MAXLENGTH, file) != NULL)
+    {
+        char *cleaned_line = parse_csv_line(row);
+        char *value = strtok(cleaned_line, ",");
+
+        for (int i = 0; i < header_index; i++)
+        {
+            value = strtok(NULL, ",");
+        }
+
+        double new_val = atof(value);
+        if (new_val != 0.0 || value[0] == '0')
+        {
+            has_numeric_data = true;
+            sum += new_val;
+            count++;
+        }
+
+        free(cleaned_line);
+    }
+
+    if (!has_numeric_data)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    double mean = sum / count;
+    printf("%f\n", mean);
+}
+
 void process_first_arg(int argc, char *argv[], FILE *file)
 {
-
     char *first_arg = argv[1]; // get first argument
 
     // compare argument with (f, r, h)
