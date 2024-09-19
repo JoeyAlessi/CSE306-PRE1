@@ -359,7 +359,7 @@ void calculateMaximumValue(char *field, FILE *file)
 
     if (isdigit(field[0]))
     {
-        header_index = atoi(field); 
+        header_index = atoi(field);
     }
     else
     {
@@ -370,10 +370,10 @@ void calculateMaximumValue(char *field, FILE *file)
 
             while (field_name != NULL)
             {
-                field_name[strcspn(field_name, "\r\n")] = 0; 
+                field_name[strcspn(field_name, "\r\n")] = 0;
                 if (strcmp(field_name, field) == 0)
                 {
-                    header_index = index; 
+                    header_index = index;
                     break;
                 }
                 index++;
@@ -400,15 +400,15 @@ void calculateMaximumValue(char *field, FILE *file)
 
         double new_val = atoi(value);
         if (new_val != 0.0 || value[0] == '0')
-        { 
+        {
             has_numeric_data = true;
-            if (new_val > max_value)  
+            if (new_val > max_value)
             {
                 max_value = new_val;
             }
         }
 
-        free(cleaned_line); 
+        free(cleaned_line);
     }
 
     if (!has_numeric_data)
@@ -418,7 +418,6 @@ void calculateMaximumValue(char *field, FILE *file)
 
     printf("%d\n", max_value);
 }
-
 
 void calculateMeanValue(char *field, FILE *file)
 {
@@ -430,7 +429,7 @@ void calculateMeanValue(char *field, FILE *file)
 
     if (isdigit(field[0]))
     {
-        header_index = atoi(field); 
+        header_index = atoi(field);
     }
     else
     {
@@ -441,7 +440,7 @@ void calculateMeanValue(char *field, FILE *file)
 
             while (field_name != NULL)
             {
-                field_name[strcspn(field_name, "\r\n")] = 0; 
+                field_name[strcspn(field_name, "\r\n")] = 0;
                 if (strcmp(field_name, field) == 0)
                 {
                     header_index = index;
@@ -552,7 +551,20 @@ void process_first_arg(int argc, char *argv[], FILE *file)
         {
             if (strcmp(argv[i], "-min") == 0)
             {
-                calculateMinimumValue(argv[i + 1], file);
+                FILE *min_file = open_file(argc, argv);
+                calculateMinimumValue(argv[i + 1], min_file);
+                i += 1; // Skip the field associated with min as its being entered into the fucntion.
+            }
+            if (strcmp(argv[i], "-mean") == 0)
+            {
+                FILE *mean_file = open_file(argc, argv);
+                calculateMeanValue(argv[i + 1], mean_file);
+                i += 1; // Skip the field associated with min as its being entered into the fucntion.
+            }
+            if (strcmp(argv[i], "-max") == 0)
+            {
+                FILE *max_file = open_file(argc, argv);
+                calculateMaximumValue(argv[i + 1], max_file);
                 i += 1; // Skip the field associated with min as its being entered into the fucntion.
             }
         }

@@ -1,0 +1,16 @@
+DATE,UBIT,DURATION,ACTIVITY & TOOL DESCTIPTION
+
+
+09/10/2024, djgage, 15 minutes, Read the handout and tried to understand what we had to do for the project and started to brain storm ideas on how to do each function
+
+09/17/2024, djgage, 15 minutes, set up environment to work on the code... windows doesn't support basic gdb so I had to install 
+
+09/17/2024, djgage, 20 minutes, Tested functions based on given commands and took notes on which was broken and which wasn't implemented.
+
+09/17/2024, djgage, 1 Hour, Found a bug in the min -h function where it wasn't producing the correct output. Used gdb to iterate through to try and find the error by printing the value at each iteration in gdb. The error was that the values were getting set as an integer not a double. So I did some research on how to convert strings to doubles... I found atof so I switched the atoi call to atof
+
+09/17/2024, djgage, 1 Hour, Developed the functionality of -min and seet the basis of what needs to be done for -max and -mean
+
+09/19/2024, djgage, 1 Hour, Made log of work and tested the new functionality of -max and -mean. I found a few bugs in them. One being they weren't actually being called so i added a call to the functions when they are in the arguments. I also found a bug when there are multiple function calls... The file pointer wasn't getting reset when going to other functions so it wasn't reading anything past the first function call if we have multiple arguments so I opened a new file when each connection every time we go to one of the functions and pass that in. 
+
+
