@@ -4,8 +4,7 @@
 #include <stdbool.h>
 #include <math.h>
 #include <ctype.h>
-
-#define MAXLENGTH 1024
+#include "csv.h"
 
 // function to open file
 FILE *open_file(int argc, char *argv[])
