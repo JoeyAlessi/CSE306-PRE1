@@ -462,7 +462,6 @@ void calculateMeanValue(char *field, FILE *file)
     {
         char *cleaned_line = parse_csv_line(row);
         char *value = strtok(cleaned_line, ",");
-
         for (int i = 0; i < header_index; i++)
         {
             value = strtok(NULL, ",");
@@ -488,9 +487,61 @@ void calculateMeanValue(char *field, FILE *file)
     printf("%f\n", mean);
 }
 
+void findRecordsValue(char *field, char *value, FILE *file)
+{
+    printf("here\n");
+    char row[MAXLENGTH];
+    bool has_numeric_data = false;
+    int header_index = -1;
+
+    if (isdigit(field[0]))
+    {
+        header_index = atoi(field);
+    }
+    else 
+    {
+        if (fgets(row, MAXLENGTH, file) != NULL)
+        {
+            char *field_name = strtok(row,",");
+            int index = 0;
+
+            while (field_name != NULL)
+            {
+                field_name[strcspn(field_name, "\r\n")] = 0;
+                if (strcmp(field_name, field) == 0)
+                {
+                    header_index = index;
+                    printf("%d\n",header_index);
+                    break;
+                }
+                index++;
+                field_name = strtok(NULL, ",");
+            }
+        }
+    }
+    if (header_index == -1)
+    {
+        fprintf(stderr, "Field '%s' not found in header.\n", field);
+        exit(EXIT_FAILURE);
+    }
+    while (fgets(row, MAXLENGTH, file) != NULL)
+    {
+        char *cleaned_line = parse_csv_line(row);
+        char *csv_val = strtok(cleaned_line,",");
+        for (int i = 0; i < header_index; i++){csv_val = strtok(NULL,",");}
+        if (strcmp(csv_val,value) == 0)
+        {
+            //printf("%s", row);
+        }
+        free(cleaned_line);
+    }
+
+}
+
 void process_first_arg(int argc, char *argv[], FILE *file)
 {
     char *first_arg = argv[1]; // get first argument
+    int invalid_flag = -1;
 
     // compare argument with (f, r, h)
     if (strcmp(first_arg, "-f") == 0)
@@ -554,23 +605,36 @@ void process_first_arg(int argc, char *argv[], FILE *file)
                 FILE *min_file = open_file(argc, argv);
                 calculateMinimumValue(argv[i + 1], min_file);
                 i += 1; // Skip the field associated with min as its being entered into the fucntion.
+                invalid_flag = 0;
             }
             if (strcmp(argv[i], "-mean") == 0)
             {
                 FILE *mean_file = open_file(argc, argv);
                 calculateMeanValue(argv[i + 1], mean_file);
                 i += 1; // Skip the field associated with min as its being entered into the fucntion.
+                invalid_flag = 0;
             }
             if (strcmp(argv[i], "-max") == 0)
             {
                 FILE *max_file = open_file(argc, argv);
                 calculateMaximumValue(argv[i + 1], max_file);
                 i += 1; // Skip the field associated with min as its being entered into the fucntion.
+                invalid_flag = 0;
+            }
+            if (strcmp(argv[i], "-records") == 0)
+            {
+                FILE *records_file = open_file(argc, argv);
+                findRecordsValue(argv[i + 1], argv[i + 2], records_file);
+                i += 2; // Skip the field and value associated with records.
+                invalid_flag = 0;
             }
         }
 
         // CAN BE -recrods, -mean, or -max (LATER)
-        printf("Invalid first argument.\n");
+        if (invalid_flag < 0)
+        {
+            printf("Invalid first argument.\n");
+        }
     }
 }
 

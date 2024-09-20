@@ -23,6 +23,12 @@ void process_multi_h_tag(int argc, char *argv[], FILE *file);
 
 void calculateMinimumValue(char *field, FILE *file);
 
+void calculateMaximumValue(char *field, FILE *file);
+
+void calculateMeanValue(char *field, FILE *file);
+
+void findRecordsValue(char *field, char *value, FILE *file);
+
 void process_first_arg(int argc, char *argv[], FILE *file);
 
 #endif
