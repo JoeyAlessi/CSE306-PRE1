@@ -1,0 +1,5 @@
+DATE,UBIT,DURATION,ACTIVITY & TOOL DESCTIPTION
+2024/09/17,edwiniri,10 minutes,Created this csv file to log our work in libreOffice which is a spread sheet program on linux
+2024/09/19,edwiniri,30 minutes,"Created csv.h to help keep global variables, and function defintions organized. It will also be useful for when I create the auto tester. I used my neovim setup to help write the code for csv.h. neovim is a text editor like emacs, but better >:)"
+2024/09/20,edwiniri,1 hour,Created the findRecord function in the csv.c file using my own neovim setup to help edit the text
+2024/09/20,edwiniri,2 hours,"Debugged the my findRecords function in the csv.c file using printf statements, gdb, and my neovim c linter/lsp. It was the last function to add to the file, and many things in the file were obscured!"
