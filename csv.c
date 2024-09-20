@@ -248,9 +248,8 @@ void process_single_h_tag(char *op, char *column, FILE *file)
 
         // print mean value
         printf("%f\n", mean);
-    }
-
-    else
+    }   
+    else 
     {
         exit(EXIT_FAILURE); // incorrect second value given for h tag
     }
@@ -489,7 +488,6 @@ void calculateMeanValue(char *field, FILE *file)
 
 void findRecordsValue(char *field, char *value, FILE *file)
 {
-    printf("here\n");
     char row[MAXLENGTH];
     bool has_numeric_data = false;
     int header_index = -1;
@@ -511,7 +509,6 @@ void findRecordsValue(char *field, char *value, FILE *file)
                 if (strcmp(field_name, field) == 0)
                 {
                     header_index = index;
-                    printf("%d\n",header_index);
                     break;
                 }
                 index++;
@@ -529,9 +526,10 @@ void findRecordsValue(char *field, char *value, FILE *file)
         char *cleaned_line = parse_csv_line(row);
         char *csv_val = strtok(cleaned_line,",");
         for (int i = 0; i < header_index; i++){csv_val = strtok(NULL,",");}
+        csv_val[strcspn(csv_val, "\r\n")] = 0;
         if (strcmp(csv_val,value) == 0)
         {
-            //printf("%s", row);
+            printf("%s", row);
         }
         free(cleaned_line);
     }
@@ -588,6 +586,12 @@ void process_first_arg(int argc, char *argv[], FILE *file)
             char *third_arg = argv[3];  // third
 
             process_single_h_tag(second_arg, third_arg, file); // call h_tag function
+        }
+        else if (strcmp(argv[2],"-records") == 0) // This is bad, and I shouldn't do this >:)
+        {
+            FILE *records_file = open_file(argc, argv);
+            findRecordsValue(argv[3], argv[4], records_file);
+            invalid_flag = 0;
         }
         else
         {
